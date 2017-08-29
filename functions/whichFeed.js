@@ -59,9 +59,14 @@ function constructResponse(data, feed){
 					},
 					{
 						"type":"postback",
-				        "title":"Something else",
+				        "title":"More " + feed + ' news',
 				        "payload":"Something else ",
 					},
+					{
+						"type":"postback",
+				        "title":"Another Category",
+				        "payload":"Another Category",
+					}
 				]
 			}
 		]

@@ -48,17 +48,29 @@ function getFBData(fbID, callback){
 }
 
 function constructResponse(data, resolve){
+
+
+
+
 	return new Promise((resolve, reject) => {
+		let categories = ['Top Stories', 'World', 'Business', 'Politics', 'Health', 'Education', 'Science', 'Technology', 'Entertainment', 'Have Your Say', 'Gossip']
+		let replies = []
+		for (var i = 0; i < categories.length; i++){
+			let reply = {
+		 		"content_type":"text",
+		        "title":categories[i],
+		        "payload":categories[i],
+			}
+			replies.push(reply)
+		}
+		console.log(replies)
 		let text0 = data.first_name ? 'Hey ' + data.first_name + ', what would you like to look at?' : 'Hey , what would you like to look at?';
 		let text1 = "you can say things like 'tell me about politics', or 'What are the latest stories?"
 		let response = responseTemplate([
 			{
-				type: 'text',
-				text: text0	
-			},
-			{
-				type: 'text',
-				text: text1
+				type: 'quickReplies',
+				text: text0,
+				replies: replies
 			}
 		])
 		resolve(response)

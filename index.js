@@ -34,6 +34,8 @@ setInterval(()=>{
 
 app.post('/webhook', function(req, res){
 
+	console.log('asdasdasd')
+
 	let intentName = req.body.result.metadata.intentName
 		console.log('WEBHOOK RECEIVED: ', intentName)
 

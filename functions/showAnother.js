@@ -4,7 +4,8 @@ const responseTemplate = require('../helpers/responseTemplate')
 module.exports = function(reqBody){
 	return new Promise((resolve, reject) => {
 		let feed;
-		let context = reqBody.result.contexts.find(c => c.name === "feed");
+		console.log(reqBody.result.contexts)
+		let context = reqBody.result.contexts.find(c => c.name === "persistentfeed");
 		if (context){
 			feed = context.parameters.feed
 		} else {
@@ -87,9 +88,14 @@ function constructResponse(data, feed){
 				},
 				{
 					"type":"postback",
-			        "title":"Something else",
+			        "title":"More " + feed + " news",
 			        "payload":"Something else ",
 				},
+				{
+					"type":"postback",
+			        "title":"Another Category",
+			        "payload":"Another Category",
+				}
 			]
 		}
 

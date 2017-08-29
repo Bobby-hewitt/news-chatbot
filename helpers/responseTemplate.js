@@ -3,6 +3,7 @@ module.exports = function(items,contexts){
 	let processedItems = []
 
 	for (var i =0; i<items.length; i++){
+		console.log(items[i].type)
 		switch (items[i].type){
 			case 'buttons':
 				let buttons = generateButtons(items[i].text, items[i].buttons)
@@ -21,6 +22,7 @@ module.exports = function(items,contexts){
 				processedItems.push(genericTemplate)
 			break
 			case 'quickReplies': 
+				console.log('asdasds')
 				let quickReplies = generateQuickReplies(items[i].text, items[i].replies)
 				processedItems.push(quickReplies)
 			break
@@ -80,21 +82,10 @@ function generateImage(url){
 }
 
 function generateQuickReplies(text, replies){
+	console.log('quick reply')
 	return({
 	"text": text,
-    "quick_replies":[
-      {
-        "content_type":"text",
-        "title":"See full article",
-        "payload":"See full article",
-       
-      },
-      {
-        "content_type":"text",
-        "title":"Something Else",
-        "payload":"Show something else"
-      }
-    ]
+    "quick_replies":replies
 
 	})
 }
