@@ -50,7 +50,7 @@ function getFBData(fbID, callback){
 function constructResponse(data, resolve){
 	return new Promise((resolve, reject) => {
 		let text0 = data.first_name ? 'Hey ' + data.first_name + ', what would you like to look at?' : 'Hey , what would you like to look at?';
-		let text1 = "you can say things like 'show me the headlines', or 'tell me what's happening in the UK"
+		let text1 = "you can say things like 'tell me about politics', or 'What are the latest stories?"
 		let response = responseTemplate([
 			{
 				type: 'text',
