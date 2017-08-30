@@ -69,7 +69,7 @@ module.exports = function(reqBody, intro){
 function constructResponse(data, feed, intro){
 	
 	let feedEmojis = {
-		'Headlines': '🤙',
+		'Top Stories': '🤙',
 		'World': '🌍',
 		'UK': '🇬🇧',
 		'England': '',
