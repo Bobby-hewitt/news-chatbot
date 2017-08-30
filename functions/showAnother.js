@@ -1,34 +1,62 @@
 const DB = require('../helpers/db')
 const responseTemplate = require('../helpers/responseTemplate')
+const badgeResponse = require('./badgeResponse')
 
-module.exports = function(reqBody){
+module.exports = function(reqBody, intro){
+
+	
+
 	return new Promise((resolve, reject) => {
+		let badgeBreaks = [1,2,3,4,5,6,7,8,9, 100, 150, 200, 300, 400, 500]
 		let feed;
-		console.log(reqBody.result.contexts)
 		let context = reqBody.result.contexts.find(c => c.name === "persistentfeed");
 		if (context){
 			feed = context.parameters.feed
-		} else {
-			let context2 = reqBody.result.contexts.find(c => c.name === "persistentfeed");
-			let feed2 = context2.parameters.feed
-			constructContinueResponse(feed2).then((response) => {
-				resolve(response)
-			})
+		} 
+		if (!feed){
+			feed = reqBody.result.parameters.feed
 		}
 		let fbId = reqBody.originalRequest.data.sender.id
 		let newsIndex;
+		let generalIndex;
 		let user = new DB({fbId})
 		let db = new DB({fbId: 'feeds'})
+		
 		db.getData(feed).then((feedData) => {
-			user.getData('/feeds/' + feed).then((userData) => {
-				if (userData){
-					newsIndex = userData
+			user.getData('/feeds/').then((ud) => {
+				console.log("USER DATA: ",  ud)
+				if (ud){
+					if (ud[feed]){
+						let userCategoryData = ud[feed]
+						newsIndex = userCategoryData
+					} else {
+						newsIndex = 0;
+					}
+					if (ud.general){
+						generalIndex = ud.general
+						for (var i = 0; i < badgeBreaks.length; i++){
+							if (badgeBreaks[i] === generalIndex){
+								console.log('found badge')
+								user.setData('feeds/' + 'general', generalIndex + 1)
+								badgeResponse(generalIndex,badgeBreaks, feed, fbId).then((response) => {
+									resolve(response)
+								})
+								return
+							}
+						}
+
+					} else {
+						generalIndex = 0
+					}
+					
 				} else {
 					newsIndex = 0
+					generalIndex = 0
 				}
 				user.setData('feeds/' + feed, newsIndex + 1)
+				user.setData('feeds/general', generalIndex + 1)
 
-				constructResponse(feedData[newsIndex % 20], feed).then((response) => {
+				constructResponse(feedData[newsIndex % 20], feed, intro).then((response) => {
 					resolve(response)
 				})
 
@@ -38,70 +66,121 @@ module.exports = function(reqBody){
 }
 
 
-function constructContinueResponse(feed){
-	return new Promise((resolve, reject) => {
-		let response = responseTemplate([
-			{
-				type: 'buttons',
-				text: 'Would you like to continue with ' + feed + ' or check out another category?',
-				buttons: [
-					{
-						"type":"postback",
-						"payload":'tell me about ' + feed,
-	  
-				        "title":"Continue with " + feed,
-					},
-					{
-						"type":"postback",
-				        "title":"Another Category",
-				        "payload":"Another category ",
-					},
-				]
-			}
-		])
-		resolve(response)
-	})
-}
+function constructResponse(data, feed, intro){
+	
+	let feedEmojis = {
+		'Headlines': '🤙',
+		'World': '🌍',
+		'UK': '🇬🇧',
+		'England': '',
+		'NorthernIreland': '',
+		'Scotland': '',
+		'Wales': '',
+		'Business': '🤝',
+		'Politics': '🏛',
+		'Health': '🚑',
+		'Education': '👩‍',
+		'Science': '🔬',
+		'Technology': '📱',
+		'Entertainment': '🎞',
+		'HaveYourSay': '✋',
+		'Magazine': '💑',
+		'LatestStories': '',
+	}
 
-function constructResponse(data, feed){
 	return new Promise((resolve, reject) => {
+		let confirmationText = ['Great 👍 ', 'Ok 🖖 ', 'Sure thing 🤙 ', 'Alright then 👌 ', 'Right 👉 ', 'Sweet 🙌 ']
+		let confirmationSelector = Math.floor(Math.random() * (confirmationText.length-1))
+		let fullArticleText = ['See article 🕵', 'Tell me more 👂', "I'm interested 👀", '']
+		let fullArticleSelector = Math.floor(Math.random()*(fullArticleText.length-1))
+		let anotherCategoryText = ['Another category 🙏', feed + ' = 💩', 'Bored of ' + feed + '👐', "🦆 out of " + feed, '']
+		let anotherCategorySelector = Math.floor(Math.random() * (anotherCategoryText.length-1))
+		let content; 
+
 		let url = data.media.thumbnail[0].url[0]
-		let response = responseTemplate([
-		{
-			type: "image",
-			url: url
-		},
-		{
-			type: 'text',
-			text: data.title
-		},
-		{
-			type: 'buttons',
-			text: data.description,
-			buttons: [
+		let context = [
+			{"name":"feed", "lifespan":2, "parameters":{"feed": feed}}, 
+			{"name":"persistentFeed", "lifespan":99, "parameters":{"feed": feed}}
+		]
+		console.log('INTRO: ',intro)
+		if (intro){
+			content = [
 				{
-					"type":"web_url",
-					"url":data.url,
-					"webview_height_ratio": "full",
-  
-			        "title":"See full article",
+					type: "text",
+					text: confirmationText[confirmationSelector] + " Here is the " + feed + ' news'
+
 				},
 				{
-					"type":"postback",
-			        "title":"More " + feed + " news",
-			        "payload":"Something else ",
+					type: "image",
+					url: url
 				},
 				{
-					"type":"postback",
-			        "title":"Another Category",
-			        "payload":"Another Category",
+					type: 'text',
+					text: data.title
+				},
+
+				{
+					type: 'buttons',
+					text: data.description,
+					buttons: [
+						{
+							"type":"web_url",
+							"url":data.url,
+							"webview_height_ratio": "full",
+					        "title":fullArticleText[fullArticleSelector],
+						},
+						{
+							"type":"postback",
+					        "title":"More on " + feed + feedEmojis[feed],
+					        "payload":"Something else ",
+						},
+						{
+							"type":"postback",
+					        "title":anotherCategoryText[anotherCategorySelector],
+					        "payload":"Another Category",
+						}
+					]
+				}
+			]
+		} else {
+			content = [
+				{
+					type: "image",
+					url: url
+				},
+				{
+					type: 'text',
+					text: data.title
+				},
+
+				{
+					type: 'buttons',
+					text: data.description,
+					buttons: [
+						{
+							"type":"web_url",
+							"url":data.url,
+							"webview_height_ratio": "full",
+					        "title":fullArticleText[fullArticleSelector],
+						},
+						{
+							"type":"postback",
+					        "title":"More on " + feed + ' ' + feedEmojis[feed],
+					        "payload":"Something else ",
+						},
+						{
+							"type":"postback",
+					        "title":anotherCategoryText[anotherCategorySelector],
+					        "payload":"Another Category",
+						}
+					]
 				}
 			]
 		}
+	
 
-		])
+
+		let response = responseTemplate(content, context)
 		resolve(response)
 	})
-
-
 }

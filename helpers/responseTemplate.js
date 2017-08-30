@@ -3,7 +3,6 @@ module.exports = function(items,contexts){
 	let processedItems = []
 
 	for (var i =0; i<items.length; i++){
-		console.log(items[i].type)
 		switch (items[i].type){
 			case 'buttons':
 				let buttons = generateButtons(items[i].text, items[i].buttons)

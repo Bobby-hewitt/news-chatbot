@@ -25,7 +25,36 @@ module.exports = function(feed, fbId){
 }
 
 function constructResponse(data, feed){
+	
+	let feedEmojis = {
+		'Headlines': '🤙',
+		'World': '🌍',
+		'UK': '🇬🇧',
+		'England': '',
+		'NorthernIreland': '',
+		'Scotland': '',
+		'Wales': '',
+		'Business': '🤝',
+		'Politics': '🏛',
+		'Health': '🚑',
+		'Education': '👩‍',
+		'Science/Nature': '🔬',
+		'Technology': '📱',
+		'Entertainment': '🎞',
+		'HaveYourSay': '✋',
+		'Magazine': '💑',
+		'LatestStories': '',
+	}
+
 	return new Promise((resolve, reject) => {
+		let fullArticleText = ['See article 🕵', 'Tell me more 👂', "I'm interested 👀", '']
+		let fullArticleSelector = Math.floor(Math.random()*(fullArticleText.length-1))
+		let confirmationText = ['Great 👍 ', 'Ok 🖖 ', 'Sure thing 🤙 ', 'Alright then 👌 ', 'Right 👉 ', 'Sweet 🙌 ']
+		let confirmationSelector = Math.floor(Math.random() * (confirmationText.length-1))
+		let anotherCategoryText = ['Another category 🙏', feed + ' = 💩', 'Bored of ' + feed + '👐', "🦆 out of " + feed, '']
+		let anotherCategorySelector = Math.floor(Math.random() * (anotherCategoryText.length-1))
+		
+
 		let url = data.media.thumbnail[0].url[0]
 		let context = [
 			{"name":"feed", "lifespan":2, "parameters":{"feed": feed}}, 
@@ -34,7 +63,7 @@ function constructResponse(data, feed){
 		let content = [
 			{
 				type: "text",
-				text: "Sure thing. Here is what's going on in " + feed
+				text: confirmationText[confirmationSelector] + " Here is the " + feed + ' news'
 
 			},
 			{
@@ -54,17 +83,16 @@ function constructResponse(data, feed){
 						"type":"web_url",
 						"url":data.url,
 						"webview_height_ratio": "full",
-	  
-				        "title":"See full article",
+				        "title":fullArticleText[fullArticleSelector],
 					},
 					{
 						"type":"postback",
-				        "title":"More " + feed + ' news',
+				        "title":"More on " + feed + feedEmojis[feed],
 				        "payload":"Something else ",
 					},
 					{
 						"type":"postback",
-				        "title":"Another Category",
+				        "title":anotherCategoryText[anotherCategorySelector],
 				        "payload":"Another Category",
 					}
 				]

@@ -16,6 +16,8 @@ app.listen(PORT, function(){
 const whichFeed = require('./functions/whichFeed')
 const defaultWelcome = require('./functions/defaultWelcome')
 const showAnother = require('./functions/showAnother')
+const selectCategory = require('./functions/selectCategory')
+const seeBadges = require('./functions/seeBadges')
 
 const getNews  = require('./getNews')
 var config = {
@@ -29,8 +31,9 @@ var config = {
 let FirebaseApp = firebase.initializeApp(config);
 
 setInterval(()=>{
+	console.log('GETTING NEWS')
 	getNews()
-},2000)
+},200000)
 
 app.post('/webhook', function(req, res){
 
@@ -48,24 +51,27 @@ app.post('/webhook', function(req, res){
 		return
 
 		case 'Default Fallback Intent':
-			let result =  {"followupEvent": {"name": 'fallback'} } 
-			res.json(result)
+		case 'Choose Category':
+			selectCategory().then((result) => {
+				res.json(result)
+			})
 		return
 
 		case 'Category Selected':
 		case 'Which Feed': 
-			let feed = req.body.result.parameters.feed
-			let fbId = req.body.originalRequest.data.sender.id
-			whichFeed(feed, fbId).then((result) => {
-				res.json(result)
-			})
-		return
-
 		case 'Show Another':
-			showAnother(req.body).then((result) => {
+		let intro = true
+		if(intentName === 'Show Another'){ intro = false }
+			showAnother(req.body ,intro).then((result) => {
 				res.json(result)
 			})
 		break
+
+		case 'See All Badges':
+			seeBadges(req.body).then((result) => {
+				res.json(result)
+			})
+		return
 	}
 })
 
