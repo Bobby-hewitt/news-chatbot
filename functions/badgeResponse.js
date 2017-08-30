@@ -17,7 +17,7 @@ const feedEmojis = {
 	'Technology': '📱',
 	'Entertainment': '🎞',
 	'HaveYourSay': '✋',
-	'Magazine': '💑',
+	'Gossip': '💑',
 	'LatestStories': '',
 }
 

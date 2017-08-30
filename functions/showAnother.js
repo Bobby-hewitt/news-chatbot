@@ -84,7 +84,7 @@ function constructResponse(data, feed, intro){
 		'Technology': '📱',
 		'Entertainment': '🎞',
 		'HaveYourSay': '✋',
-		'Magazine': '💑',
+		'Gossip': '💑',
 		'LatestStories': '',
 	}
 
