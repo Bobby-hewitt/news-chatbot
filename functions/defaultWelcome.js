@@ -49,20 +49,39 @@ function getFBData(fbID, callback){
 
 function constructResponse(data, resolve){
 
+	let feedEmojis = {
+		'Top Stories': ' 🤙',
+		'World': ' 🌍',
+		'UK': ' 🇬🇧',
+		'England': '',
+		'NorthernIreland': '',
+		'Scotland': '',
+		'Wales': '',
+		'Business': ' 🤝',
+		'Politics': ' 🏛',
+		'Health': ' 🚑',
+		'Education': ' 👩‍🏫',
+		'Science/Nature': ' 🔬',
+		'Technology': ' 📱',
+		'Entertainment': ' 🎞',
+		'HaveYourSay': ' ✋',
+		'Gossip': ' 💑',
+		'Sport': ' ⚽',
+	}
+
 	return new Promise((resolve, reject) => {
-		let categories = ['Top Stories 🤙', 'World 🌍', 'Business 🤝', 'Politics 🏛', 'Health 🚑', 'Education 👩‍🏫', 'Science 🔬', 'Technology 📱', 'Entertainment 🎞 ', 'Have Your Say ✋', 'Gossip 💑 ']
+		let categories = ['Top Stories', 'Politics', 'World', 'Sport', 'Business',  'Health', 'Education', 'Science', 'Technology', 'Entertainment', 'Gossip']
 		let replies = []
 		for (var i = 0; i < categories.length; i++){
 			let reply = {
 		 		"content_type":"text",
-		        "title":categories[i],
+		        "title":categories[i] + feedEmojis[categories[i]],
 		        "payload":categories[i],
 			}
 			replies.push(reply)
 		}
 		console.log(replies)
 		let text0 = data.first_name ? 'Hey ' + data.first_name + '👋. What news do you want to look at? 🤷' : 'Hey , what would you like to look at? 🤷';
-		let text1 = "you can say things like 'tell me about politics', or 'What are the latest stories?"
 		let response = responseTemplate([
 			{
 				type: 'quickReplies',

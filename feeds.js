@@ -14,7 +14,7 @@ module.exports = function(callback){
 		'Science/Nature': 'http://feeds.bbci.co.uk/news/rss.xml?edition=uk',
 		'Technology': 'http://feeds.bbci.co.uk/news/rss.xml?edition=uk',
 		'Entertainment': 'http://feeds.bbci.co.uk/news/rss.xml?edition=uk',
-		'HaveYourSay': 'http://feeds.bbci.co.uk/news/rss.xml?edition=uk',
+		'Sport': 'http://feeds.bbci.co.uk/sport/rss.xml?edition=uk'
 		'Magazine': 'http://feeds.bbci.co.uk/news/rss.xml?edition=uk',
 		'LatestStories': 'http://feeds.bbci.co.uk/news/rss.xml?edition=uk',
 	}

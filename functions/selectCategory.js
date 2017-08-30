@@ -2,7 +2,7 @@ const responseTemplate = require('../helpers/responseTemplate')
 
 module.exports = function(){
 	return new Promise((resolve, reject) => {
-		let categories = ['Top Stories 🤙', 'World 🌍', 'Business 🤝', 'Politics 🏛', 'Health 🚑', 'Education 👩‍🏫', 'Science 🔬', 'Technology 📱', 'Entertainment 🎞 ', 'Have Your Say ✋', 'Gossip 💑 ']
+		let categories = ['Top Stories 🤙', 'Politics 🏛', 'World 🌍', 'Sport ⚽️', 'Business 🤝',  'Health 🚑', 'Education 👩‍🏫', 'Science 🔬', 'Technology 📱', 'Entertainment 🎞 ',  'Gossip 💑 ']
 		let replies = []
 		for (var i = 0; i < categories.length; i++){
 			let reply = {

@@ -7,15 +7,20 @@ module.exports = function(reqBody, intro){
 	
 
 	return new Promise((resolve, reject) => {
+		console.log('IN SHOW ANOTHER')
 		let badgeBreaks = [5,15,30,50, 100, 150, 200, 300, 400, 500]
 		let feed;
 		let context = reqBody.result.contexts.find(c => c.name === "persistentfeed");
 		if (context){
 			feed = context.parameters.feed
+			console.log('getting feed from context: ', feed)
 		} 
 		if (!feed){
+			console.log('getting feed from params: ', feed)
 			feed = reqBody.result.parameters.feed
 		}
+
+		console.log('FEED = ',feed)
 		let fbId = reqBody.originalRequest.data.sender.id
 		let newsIndex;
 		let generalIndex;
@@ -55,7 +60,7 @@ module.exports = function(reqBody, intro){
 				}
 				user.setData('feeds/' + feed, newsIndex + 1)
 				user.setData('feeds/general', generalIndex + 1)
-
+				console.log(feedData[newsIndex % 20], feedData.length, newsIndex)
 				constructResponse(feedData[newsIndex % 20], feed, intro).then((response) => {
 					resolve(response)
 				})
@@ -86,6 +91,7 @@ function constructResponse(data, feed, intro){
 		'HaveYourSay': '✋',
 		'Gossip': '💑',
 		'LatestStories': '',
+		'Sport': '⚽️'
 	}
 
 	return new Promise((resolve, reject) => {

@@ -19,6 +19,7 @@ const feedEmojis = {
 	'HaveYourSay': '✋',
 	'Gossip': '💑',
 	'LatestStories': '',
+	'Sport': '⚽️'
 }
 
 module.exports = function(num, arr, feed, fbId){
@@ -57,11 +58,11 @@ module.exports = function(num, arr, feed, fbId){
 			},
 			{
 				type: 'text',
-				text: "You've viewed " + num.toString() + ' aritcles'
+				text: "You've read " + num.toString() + ' aritcles'
 			},
 			{
 				type: 'buttons',
-				text: "You've won the " + badge + ' badge',
+				text: "You've earned the " + badge + ' badge',
 				buttons: [{
 					type: 'postback',
 					payload: 'See all badges',
