@@ -11,13 +11,13 @@ module.exports  = function(reqBody){
 		db.setData('id', fbId)
 		getFBData(fbId).then((data) => {
 			constructResponse(data).then((response) => {resolve(response)})
-			db.setData('/', {
+			db.setData('fbData', {
 				fbData: data		
 			})
 		})
 		.catch((err) => {
 			constructResponse(data).then((response) => {resolve(response)})
-			db.setData('/fbData', {
+			db.setData('fbData', {
 				id: fbId		
 			})
 		})
@@ -48,9 +48,6 @@ function getFBData(fbID, callback){
 }
 
 function constructResponse(data, resolve){
-
-
-
 
 	return new Promise((resolve, reject) => {
 		let categories = ['Top Stories 🤙', 'World 🌍', 'Business 🤝', 'Politics 🏛', 'Health 🚑', 'Education 👩‍🏫', 'Science 🔬', 'Technology 📱', 'Entertainment 🎞 ', 'Have Your Say ✋', 'Gossip 💑 ']
