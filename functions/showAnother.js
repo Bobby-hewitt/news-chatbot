@@ -106,6 +106,36 @@ function constructResponse(data, feed, intro){
 		let content; 
 
 		let url = data.media.thumbnail[0].url[0]
+
+		let buttons = data.url ? [
+						{
+							"type":"web_url",
+							"url":data.url,
+							"webview_height_ratio": "full",
+					        "title":fullArticleText[fullArticleSelector],
+						},
+						{
+							"type":"postback",
+					        "title":"More on " + feed + ' ' +feedEmojis[feed],
+					        "payload":"Something else ",
+						},
+						{
+							"type":"postback",
+					        "title":anotherCategoryText[anotherCategorySelector],
+					        "payload":"Another Category",
+						}
+					] : [
+						{
+							"type":"postback",
+					        "title":"More on " + feed + ' ' +feedEmojis[feed],
+					        "payload":"Something else ",
+						},
+						{
+							"type":"postback",
+					        "title":anotherCategoryText[anotherCategorySelector],
+					        "payload":"Another Category",
+						}
+					]
 		let context = [
 			{"name":"feed", "lifespan":2, "parameters":{"feed": feed}}, 
 			{"name":"persistentFeed", "lifespan":99, "parameters":{"feed": feed}}
@@ -130,24 +160,7 @@ function constructResponse(data, feed, intro){
 				{
 					type: 'buttons',
 					text: data.description,
-					buttons: [
-						{
-							"type":"web_url",
-							"url":data.url,
-							"webview_height_ratio": "full",
-					        "title":fullArticleText[fullArticleSelector],
-						},
-						{
-							"type":"postback",
-					        "title":"More on " + feed + ' ' +feedEmojis[feed],
-					        "payload":"Something else ",
-						},
-						{
-							"type":"postback",
-					        "title":anotherCategoryText[anotherCategorySelector],
-					        "payload":"Another Category",
-						}
-					]
+					buttons: buttons
 				}
 			]
 		} else {
@@ -164,24 +177,7 @@ function constructResponse(data, feed, intro){
 				{
 					type: 'buttons',
 					text: data.description,
-					buttons: [
-						{
-							"type":"web_url",
-							"url":data.url,
-							"webview_height_ratio": "full",
-					        "title":fullArticleText[fullArticleSelector],
-						},
-						{
-							"type":"postback",
-					        "title":"More on " + feed + ' ' + feedEmojis[feed],
-					        "payload":"Something else ",
-						},
-						{
-							"type":"postback",
-					        "title":anotherCategoryText[anotherCategorySelector],
-					        "payload":"Another Category",
-						}
-					]
+					buttons: buttons
 				}
 			]
 		}
