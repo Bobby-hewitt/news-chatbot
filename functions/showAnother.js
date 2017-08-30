@@ -20,6 +20,8 @@ module.exports = function(reqBody, intro){
 			feed = reqBody.result.parameters.feed
 		}
 
+
+
 		console.log('FEED = ',feed)
 		let fbId = reqBody.originalRequest.data.sender.id
 		let newsIndex;
@@ -91,7 +93,7 @@ function constructResponse(data, feed, intro){
 		'HaveYourSay': '✋',
 		'Gossip': '💑',
 		'LatestStories': '',
-		'Sport': '⚽️'
+		'Sport': '⚽'
 	}
 
 	return new Promise((resolve, reject) => {
@@ -137,7 +139,7 @@ function constructResponse(data, feed, intro){
 						},
 						{
 							"type":"postback",
-					        "title":"More on " + feed + feedEmojis[feed],
+					        "title":"More on " + feed + ' ' +feedEmojis[feed],
 					        "payload":"Something else ",
 						},
 						{
