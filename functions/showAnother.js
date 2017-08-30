@@ -7,7 +7,7 @@ module.exports = function(reqBody, intro){
 	
 
 	return new Promise((resolve, reject) => {
-		let badgeBreaks = [1,2,3,4,5,6,7,8,9, 100, 150, 200, 300, 400, 500]
+		let badgeBreaks = [5,15,30,50, 100, 150, 200, 300, 400, 500]
 		let feed;
 		let context = reqBody.result.contexts.find(c => c.name === "persistentfeed");
 		if (context){

@@ -17,7 +17,7 @@ DB.prototype.getData = function(key){
 
 DB.prototype.setData = function(key, value){
     const dataRef = this.database.ref( this.fbId + "/" + key);
-    dataRef.set(value).then(() => {
+    dataRef.update(value).then(() => {
         
     });
 }
