@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const firebase = require('firebase')
-
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
@@ -18,8 +17,16 @@ const defaultWelcome = require('./functions/defaultWelcome')
 const showAnother = require('./functions/showAnother')
 const selectCategory = require('./functions/selectCategory')
 const seeBadges = require('./functions/seeBadges')
-
+const help = require('./functions/help')
+const seeFavorites = require('./functions/seeFavorites')
+const removeFavorite = require('./functions/removeFavorite')
+const favoriteRemoved = require('./functions/favoriteRemoved')
 const getNews  = require('./getNews')
+const doNotEditCategories = require('./functions/doNotEditCategories')
+const addFavorite = require('./functions/addFavorite')
+const addCategoryToFavorites = require('./functions/addCategoryToFavorites')
+const seeFullCategory = require('./functions/seeFullCategory')
+
 var config = {
 	apiKey: "AIzaSyC2Om0Hc0agcgrMOgYclznvshTr1zWwIhY",
     authDomain: "newsmash-b80c5.firebaseapp.com",
@@ -41,22 +48,19 @@ app.post('/webhook', function(req, res){
 
 	let intentName = req.body.result.metadata.intentName
 		console.log('WEBHOOK RECEIVED: ', intentName)
-
+	console.log(req.body.result)
 	switch(intentName){
-
 		case 'Default Welcome Intent':
 			defaultWelcome(req.body).then((result) => {
 				res.json(result)
 			})
 		return
-
 		case 'Default Fallback Intent':
 		case 'Choose Category':
-			selectCategory().then((result) => {
+			selectCategory(req.body).then((result) => {
 				res.json(result)
 			})
 		return
-
 		case 'Category Selected':
 		case 'Which Feed': 
 		case 'Show Another':
@@ -66,9 +70,48 @@ app.post('/webhook', function(req, res){
 				res.json(result)
 			})
 		break
-
 		case 'See All Badges':
 			seeBadges(req.body).then((result) => {
+				res.json(result)
+			})
+		return
+		case 'Help': 
+			help(req.body).then((result) => {
+				res.json(result)
+			})
+		return
+		case 'See Favorites': 
+			seeFavorites(req.body).then((result) => {
+				res.json(result)
+			})
+		return
+		case 'Remove Favorite': 
+			removeFavorite(req.body).then((result) => {
+				res.json(result)
+			})
+		return
+		case 'Favorite Removed': 
+			favoriteRemoved(req.body).then((result) => {
+				res.json(result)
+			})
+		return
+		case 'Do Not Edit Categories':
+			doNotEditCategories(req.body).then((result) => {
+				res.json(result)
+			})
+		return
+		case 'Add Favorite':
+			addFavorite(req.body).then((result) => {
+				res.json(result)
+			})
+		return
+		case 'Add Category To Favorites':
+			addCategoryToFavorites(req.body).then((result) => {
+				res.json(result)
+			})
+		return
+		case 'See Full Category': 
+			seeFullCategory(req.body).then((result) => {
 				res.json(result)
 			})
 		return

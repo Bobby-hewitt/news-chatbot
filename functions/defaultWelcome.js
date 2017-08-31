@@ -1,7 +1,7 @@
 const DB = require('../helpers/db')
 const request = require('request')
 const responseTemplate = require('../helpers/responseTemplate')
-
+const feedEmojis = require('../helpers/feedEmojis')
 // takes same route if FB data is fetched.   If err check this.
 
 module.exports  = function(reqBody){
@@ -10,13 +10,31 @@ module.exports  = function(reqBody){
 		let db = new DB({fbId})
 		db.setData('id', fbId)
 		getFBData(fbId).then((data) => {
-			constructResponse(data).then((response) => {resolve(response)})
+			db.getData('/favorites').then((favorites) => {
+				if (favorites){
+					constructResponse(data, favorites, true).then((response) => {resolve(response)})
+				} else {
+					let favorites = ['Top Stories', 'World', 'Sport', 'Entertainment', 'Gossip']
+					db.setData('favorites', favorites)
+					constructResponse(data, favorites).then((response) => {resolve(response)})
+				}
+			})
+			
 			db.setData('fbData', {
-				fbData: data		
+				fbData: data,
+
 			})
 		})
 		.catch((err) => {
-			constructResponse(data).then((response) => {resolve(response)})
+			db.getData('/favories').then((favorites) => {
+				if (favorites){
+					constructResponse(data, favorites, true).then((response) => {resolve(response)})
+				} else {
+					let favorites = ['Top Stories', 'World', 'Sport', 'Entertainment', 'Gossip']
+					db.setData('favorites', favorites)
+					constructResponse(data, favorites).then((response) => {resolve(response)})
+				}
+			})
 			db.setData('fbData', {
 				id: fbId		
 			})
@@ -47,48 +65,38 @@ function getFBData(fbID, callback){
 	})	
 }
 
-function constructResponse(data, resolve){
-
-	let feedEmojis = {
-		'Top Stories': ' 🤙',
-		'World': ' 🌍',
-		'UK': ' 🇬🇧',
-		'England': '',
-		'NorthernIreland': '',
-		'Scotland': '',
-		'Wales': '',
-		'Business': ' 🤝',
-		'Politics': ' 🏛',
-		'Health': ' 🚑',
-		'Education': ' 👩‍🏫',
-		'Science/Nature': ' 🔬',
-		'Technology': ' 📱',
-		'Entertainment': ' 🎞',
-		'HaveYourSay': ' ✋',
-		'Gossip': ' 💑',
-		'Sport': ' ⚽',
-	}
+function constructResponse(data, categories, existingFavorites){
 
 	return new Promise((resolve, reject) => {
-		let categories = ['Top Stories', 'Politics', 'World', 'Sport', 'Business',  'Health', 'Education', 'Science', 'Technology', 'Entertainment', 'Gossip']
-		let replies = []
-		for (var i = 0; i < categories.length; i++){
-			let reply = {
-		 		"content_type":"text",
-		        "title":categories[i] + feedEmojis[categories[i]],
-		        "payload":categories[i],
-			}
-			replies.push(reply)
-		}
-		console.log(replies)
-		let text0 = data.first_name ? 'Hey ' + data.first_name + '👋. What news do you want to look at? 🤷' : 'Hey , what would you like to look at? 🤷';
-		let response = responseTemplate([
+		
+		let text0 = data.first_name ? 'Hey ' + data.first_name + ' 👋' : 'Hey' + ' 👋';
+		let text1 = existingFavorites ? 'Welcome back to News Mash.' : 'Welcome to News Mash.  We bring you the latest news on your favorite topics. '
+		let text2 = existingFavorites ? 'Would you like to edit your favorite categories? 🤷' : 'We have set you up with some favorite categories to get you started. Would you like to customise them now? 🤷';
+		let responseProto = [
+			{
+				type: 'text',
+				text: text0
+			},
+			{
+				type: 'text',
+				text: text1
+			},
 			{
 				type: 'quickReplies',
-				text: text0,
-				replies: replies
+				text: text2,
+				replies: [
+				{
+					content_type: 'text',
+					title: '👍',
+					payload: 'edit favorites'
+				},{
+					content_type: 'text',
+					title: '👎',
+					payload: 'do not edit categories now'
+				}]
 			}
-		])
+		]
+		let response = responseTemplate(responseProto)
 		resolve(response)
 	})
 }

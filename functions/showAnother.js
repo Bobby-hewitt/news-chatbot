@@ -20,9 +20,6 @@ module.exports = function(reqBody, intro){
 			feed = reqBody.result.parameters.feed
 		}
 
-
-
-		console.log('FEED = ',feed)
 		let fbId = reqBody.originalRequest.data.sender.id
 		let newsIndex;
 		let generalIndex;

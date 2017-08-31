@@ -1,7 +1,7 @@
-const feedEmojis = require('../helpers/feedEmojis')
 const DB = require('../helpers/db')
 const responseTemplate = require('../helpers/responseTemplate')
-
+const badgeResponse = require('./badgeResponse')
+const feedEmojis = require('../helpers/feedEmojis')
 
 module.exports = function(reqBody){
 	let fbId = reqBody.originalRequest.data.sender.id
@@ -27,6 +27,10 @@ module.exports = function(reqBody){
 
 			let response = responseTemplate([
 				{
+					type: 'text',
+					text: 'Ok, just remember, if you ever get stuck you can always shout for help!'
+				},
+				{
 					type: 'quickReplies',
 					text: 'Which of these categories would you like to browse?',
 					replies: replies
@@ -35,4 +39,5 @@ module.exports = function(reqBody){
 			resolve(response)
 		})
 	})
+
 }
