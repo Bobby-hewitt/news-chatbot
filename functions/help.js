@@ -24,8 +24,24 @@ module.exports = function(reqBody){
 					text: "There is nothing wrong with getting stuck once in a while.😳"
 				},
 				{
+					type: "text",
+					text: "Here are some things you can say: "
+				},
+				{
+					type: "text",
+					text: "'See stories from another category'"
+				},
+				{
+					type: "text",
+					text: "'Edit my favorites'"
+				},
+				{
+					type: "text",
+					text: "'See my badges'"
+				},
+				{
 					type: 'buttons',
-					text: 'what would you like to do?',
+					text: "But as you're here you can choose from the buttons below...",
 					buttons: [
 					{
 						type: 'postback',
@@ -39,8 +55,8 @@ module.exports = function(reqBody){
 					},
 					{
 						type: 'postback',
-						payload: 'hello',
-						title: 'Start again'
+						payload: 'Edit favorites',
+						title: 'see my favs'
 					}
 					]
 				}
