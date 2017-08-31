@@ -20,13 +20,13 @@ module.exports = function(reqBody){
 						buttons: [
 					{
 						type: 'postback',
-						title: 'Add another category',
-						payload: 'add category to favorites'
+						title: 'Remove a category',
+						payload: 'remove a category from favorites'
 					},
 					{
 						type: 'postback',
-						title: 'Remove a category',
-						payload: 'remove a category from favorites'
+						title: 'Add another category',
+						payload: 'add category to favorites'
 					},
 					{
 						type: 'postback',

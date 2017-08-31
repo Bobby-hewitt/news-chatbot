@@ -19,6 +19,26 @@ module.exports = function(reqBody){
 		db.getData('/favorites').then((favorites) => {
 			
 			if (favorites){
+				if (favorites.length > 10){
+					let response1 = responseTemplate([{
+						type: 'buttons',
+						text: "You can't have more than 10 favorites.  Remove one in order to add another",
+						buttons: [
+						{
+							type: 'postback',
+							title: 'Remove category',
+							payload: 'remove category from favorites'
+						},
+						{
+							type: 'postback',
+							title: 'See the news',
+							payload: 'select category'
+						}]
+					}])
+					resolve(response1)
+					return
+				}
+				// FAVORITES.LENGTH
 				for (var i = 0; i < favorites.length; i++){
 					for (var j = 0; j < categories.length; j++){
 						if (favorites[i] === categories[j]){

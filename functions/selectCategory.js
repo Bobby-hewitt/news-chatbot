@@ -28,7 +28,7 @@ module.exports = function(reqBody){
 			let response = responseTemplate([
 				{
 					type: 'quickReplies',
-					text: 'Which of these categories would you like to browse?',
+					text: 'Which category would you like to browse?',
 					replies: replies
 				}
 			])

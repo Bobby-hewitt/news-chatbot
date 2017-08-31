@@ -20,7 +20,7 @@ module.exports = function(reqBody){
 			for (var i = 0; i < categories.length; i++){
 				let reply = {
 			 		"content_type":"text",
-			        "title":categories[i],
+			        "title":categories[i] + feedEmojis[categories[i]],
 			        "payload":'remove ' + categories[i] + ' from favorites',
 				}
 				replies.push(reply)
