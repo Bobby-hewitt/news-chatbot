@@ -24,6 +24,13 @@ module.exports = function(reqBody){
 				}
 				replies.push(reply)
 			}
+			let reply2 = {
+			 		"content_type":"text",
+			        "title":'Change my favorites',
+			        "payload":'See my favs',
+				}
+			replies.push(reply2)
+
 
 			let response = responseTemplate([
 				{
