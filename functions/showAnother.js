@@ -1,7 +1,7 @@
 const DB = require('../helpers/db')
 const responseTemplate = require('../helpers/responseTemplate')
 const badgeResponse = require('./badgeResponse')
-
+const feedEmojis = require('../helpers/feedEmojis')
 module.exports = function(reqBody, intro){
 
 	
@@ -71,27 +71,7 @@ module.exports = function(reqBody, intro){
 
 
 function constructResponse(data, feed, intro){
-	
-	let feedEmojis = {
-		'Top Stories': '🤙',
-		'World': '🌍',
-		'UK': '🇬🇧',
-		'England': '',
-		'NorthernIreland': '',
-		'Scotland': '',
-		'Wales': '',
-		'Business': '🤝',
-		'Politics': '🏛',
-		'Health': '🚑',
-		'Education': '👩‍',
-		'Science': '🔬',
-		'Technology': '📱',
-		'Entertainment': '🎞',
-		'HaveYourSay': '✋',
-		'Gossip': '💑',
-		'LatestStories': '',
-		'Sport': '⚽'
-	}
+
 
 	return new Promise((resolve, reject) => {
 		let confirmationText = ['Great 👍 ', 'Ok 🖖 ', 'Sure thing 🤙 ', 'Alright then 👌 ', 'Right 👉 ', 'Sweet 🙌 ']
