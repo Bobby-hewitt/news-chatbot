@@ -25,6 +25,12 @@ module.exports = function(reqBody){
 				}
 				replies.push(reply)
 			}
+			let backButton = {
+				content_type: 'text',
+				title: "Don't remove anything",
+				payload: 'See categories'
+			}
+			replies.push(backButton)
 
 			let response = responseTemplate([
 				{

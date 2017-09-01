@@ -69,14 +69,21 @@ module.exports = function(reqBody){
 					}
 				}
 				replies.push(obj)
-				response = responseTemplate([
+				
+			}
+			let backButton = {
+						content_type: 'text',
+						title: "Don't add anything",
+						payload: 'See categories'
+					}
+			replies.push(backButton)
+			response = responseTemplate([
 				{
 					type: 'quickReplies',
 					text: 'Ok, select a category to add to favorites 👇',
 					replies: replies
 				}])
-				resolve(response)
-			}
+			resolve(response)
 		})
 	})
 }

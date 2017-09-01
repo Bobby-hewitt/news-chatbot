@@ -7,7 +7,6 @@ module.exports = function(reqBody){
 	if (persistentfeed){
 		category = persistentfeed.parameters.feed
 	}
-
 	return new Promise((resolve, reject) => {
 		let fbId = reqBody.originalRequest.data.sender.id
 		let db = new DB({fbId: fbId})
@@ -19,29 +18,48 @@ module.exports = function(reqBody){
 			text: '🎉🎉🎉🎉🎉'
 		}]
 		db.getData('/badges').then((badges) => {
-			for (var i = 0; i < badges.length; i++){
-				let obj = {
-					type: 'text',
-					text: badges[i]
+			if (badges){
+				for (var i = 0; i < badges.length; i++){
+					let obj = {
+						type: 'text',
+						text: badges[i]
+					}
+					badgesArr.push(obj)
 				}
-				badgesArr.push(obj)
+				badgesArr.push({
+					type: 'text',
+					text:'...'
+				})
+				let buttons = {
+					type: 'buttons',
+					text: "Let's get back to the news.",
+					buttons: [{
+						type: 'postback',
+						title: "OK 😀",
+						payload: category ? category : 'select category'
+					}]
+				}
+				badgesArr.push(buttons)
+				let response = responseTemplate(badgesArr, null)
+				resolve(response)
+			} else {
+				let response = responseTemplate([{
+					type: 'text',
+					text: "You don't have any badges yet.  Keep browsing to earn them."
+				},{
+
+					type: 'buttons',
+					text: "Let's get back to the news.",
+					buttons: [{
+						type: 'postback',
+						title: "OK 😀",
+						payload: category ? category : 'select category'
+					}]
+				}])
+				resolve(response)
 			}
-			badgesArr.push({
-				type: 'text',
-				text:'...'
-			})
-			let buttons = {
-				type: 'buttons',
-				text: "Let's get back to the news.",
-				buttons: [{
-					type: 'postback',
-					title: "OK 😀",
-					payload: category ? category : 'select category'
-				}]
-			}
-			badgesArr.push(buttons)
-			let response = responseTemplate(badgesArr, null)
-		resolve(response)
+
+
 	})
 
 		

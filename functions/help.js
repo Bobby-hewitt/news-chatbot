@@ -14,6 +14,20 @@ module.exports = function(reqBody){
 				name = ''
 			}
 
+			let repliesProto = ['Change category', 'Edit favorites', 'See badges', 'Start again']
+			let replies = []
+
+			for (var i = 0; i < repliesProto.length; i++){
+
+				let obj = {
+			 		"content_type":"text",
+			        "title":repliesProto[i],
+			        "payload":repliesProto[i],
+				}
+				replies.push(obj)
+			}
+
+
 			let response = responseTemplate([
 				{
 					type: "text",
@@ -28,37 +42,9 @@ module.exports = function(reqBody){
 					text: "Here are some things you can say: "
 				},
 				{
-					type: "text",
-					text: "'See stories from another category'"
-				},
-				{
-					type: "text",
-					text: "'Edit my favorites'"
-				},
-				{
-					type: "text",
-					text: "'See my badges'"
-				},
-				{
-					type: 'buttons',
-					text: "But as you're here you can choose from the buttons below...",
-					buttons: [
-					{
-						type: 'postback',
-						payload: 'select category',
-						title: 'See news'
-					},
-					{
-						type: 'postback',
-						payload: 'see my badges',
-						title: 'See your badges'
-					},
-					{
-						type: 'postback',
-						payload: 'Edit favorites',
-						title: 'see my favs'
-					}
-					]
+					type: 'quickReplies',
+					text: "Since you're here you can choose from the buttons below, but remember you can type these commands at any time.",
+					replies: replies
 				}
 			])
 

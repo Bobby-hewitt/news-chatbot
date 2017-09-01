@@ -11,7 +11,7 @@ module.exports = function(reqBody){
 
 		responseProto.push({
 			type:'text',
-			text: 'Here are your current favs 👇'		
+			text: 'Here are your current favorites 👇'		
 		})
 		db.getData('/favorites').then((categories) => {
 			for (var i = 0; i < categories.length; i++){
@@ -37,7 +37,7 @@ module.exports = function(reqBody){
 				},
 				{
 					type: 'postback',
-					title: 'Continue as I am',
+					title: 'Continue with these',
 					payload: 'select category'
 				}]
 			})
