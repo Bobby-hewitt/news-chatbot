@@ -15,7 +15,6 @@ module.exports = function(reqBody){
 				categories = ['Top Stories', 'Politics', 'World', 'Sport', 'Business',  'Health', 'Education', 'Science', 'Technology', 'Entertainment', 'Gossip']
 				db.setData('favorites', categories)
 			}
-			console.log(categories)
 			let replies = []
 			for (var i = 0; i < categories.length; i++){
 				let reply = {

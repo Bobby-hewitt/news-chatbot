@@ -1,3 +1,5 @@
+//Object oriented helper for responses
+
 module.exports = function(items,contexts){
 
 	let processedItems = []

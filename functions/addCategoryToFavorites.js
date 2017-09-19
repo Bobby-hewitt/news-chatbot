@@ -35,9 +35,6 @@ module.exports = function(reqBody){
 					}]
 				}])
 				resolve(response)
-
-
-
 				db.setData('favorites', categories)
 				console.log(categories)
 			} 

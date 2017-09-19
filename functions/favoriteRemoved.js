@@ -1,7 +1,7 @@
 let DB = require('../helpers/db')
 const responseTemplate = require('../helpers/responseTemplate')
 
-
+//remove favorite category and return options
 module.exports = function(reqBody){
 	return new Promise((resolve, reject) => {
 		let fbId = reqBody.originalRequest.data.sender.id

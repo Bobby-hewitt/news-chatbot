@@ -3,6 +3,8 @@ const responseTemplate = require('../helpers/responseTemplate')
 const badgeResponse = require('./badgeResponse')
 const feedEmojis = require('../helpers/feedEmojis')
 
+
+// allow user to select a category
 module.exports = function(reqBody){
 	let fbId = reqBody.originalRequest.data.sender.id
 	return new Promise((resolve, reject) => {

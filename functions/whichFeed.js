@@ -25,7 +25,6 @@ module.exports = function(feed, fbId){
 }
 
 function constructResponse(data, feed){
-	
 	let feedEmojis = {
 		'Headlines': '🤙',
 		'World': '🌍',
@@ -74,7 +73,6 @@ function constructResponse(data, feed){
 				type: 'text',
 				text: data.title
 			},
-
 			{
 				type: 'buttons',
 				text: data.description,

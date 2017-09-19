@@ -1,3 +1,5 @@
+//model to map emojis to feeds
+
 module.exports =  {
 		'Top Stories': ' 🤙',
 		'World': ' 🌍',

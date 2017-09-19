@@ -40,9 +40,6 @@ module.exports = function(){
 		'US And Canada': 'http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml'
 	}
 
-
-
-
 	let keys = Object.keys(feeds)
 	
 	for (var i = 0; i < keys.length; i++){

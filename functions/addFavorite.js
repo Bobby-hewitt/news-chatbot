@@ -4,21 +4,22 @@ const badgeResponse = require('./badgeResponse')
 
 
 module.exports = function(reqBody){
-
+	// some categories have sub categories, create an object to check for this.
 	let hasSubCategories = {
 		Sport: true,
 		UK: true,
 		World: true
-
 	}
 
 	return new Promise((resolve, reject) => {
+		// Array of catgories to map over.
 		let categories = ['Top Stories','Business','Politics','Health','Education','Science','Technology','Entertainment','Gossip']
 		let fbId = reqBody.originalRequest.data.sender.id
 		let db = new DB({fbId: fbId})
 		db.getData('/favorites').then((favorites) => {
 			
 			if (favorites){
+				// Facebook quick replies limited to 11.  Ensure that this number is never exceeded
 				if (favorites.length > 10){
 					let response1 = responseTemplate([{
 						type: 'buttons',
@@ -38,7 +39,8 @@ module.exports = function(reqBody){
 					resolve(response1)
 					return
 				}
-				// FAVORITES.LENGTH
+				
+				// if less than 10 favorites remove current categories from favorites.
 				for (var i = 0; i < favorites.length; i++){
 					for (var j = 0; j < categories.length; j++){
 						if (favorites[i] === categories[j]){
@@ -51,7 +53,8 @@ module.exports = function(reqBody){
 			categories.push('Sport')
 			categories.push('UK')
 			categories.push('World')
-			console.log(categories)
+
+			//create replies response
 			let replies = []
 			for (var i = 0; i < categories.length; i++){
 				let obj;

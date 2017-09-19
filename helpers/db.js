@@ -1,5 +1,7 @@
 const firebase = require('firebase');
 
+
+// Object oriented database functions
 var DB = function(options){
     this.database = firebase.database();
     this.fbId = options.fbId;
